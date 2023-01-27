@@ -55,8 +55,8 @@ void forward ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum vorwärts Fahren
-  digitalWrite (anaST, HIGH);
-  digitalWrite (anaND, HIGH);
+  analogWrite (anaST, HIGH);
+  analogWrite (anaND, HIGH);
   digitalWrite (leftF, HIGH);
   digitalWrite (rightF, HIGH);
   digitalWrite (leftB, LOW);
@@ -69,8 +69,8 @@ void stop ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum rückwärts Fahren
-  digitalWrite (anaST, LOW);
-  digitalWrite (anaND, LOW);
+  analogWrite (anaST, LOW);
+  analogWrite (anaND, LOW);
   digitalWrite (leftF, LOW);
   digitalWrite (rightF, LOW);
   digitalWrite (leftB, LOW);
@@ -83,8 +83,8 @@ void backwards ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum rückwärts Fahren
-  digitalWrite (anaST, HIGH);
-  digitalWrite (anaND, HIGH);
+  analogWrite (anaST, HIGH);
+  analogWrite (anaND, HIGH);
   digitalWrite (leftF, LOW);
   digitalWrite (rightF, LOW);
   digitalWrite (leftB, HIGH);
@@ -97,8 +97,8 @@ void left ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum nach links Fahren
-  digitalWrite (anaST, HIGH);
-  digitalWrite (anaND, HIGH);
+  analogWrite (anaST, HIGH);
+  analogWrite (anaND, HIGH);
   digitalWrite (leftF, LOW);
   digitalWrite (rightF, HIGH);
   digitalWrite (leftB, LOW);
@@ -111,8 +111,8 @@ void right ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum nach rechts Fahren
-  digitalWrite (anaST, HIGH);
-  digitalWrite (anaND, HIGH);
+  analogWrite (anaST, HIGH);
+  analogWrite (anaND, HIGH);
   digitalWrite (leftF, HIGH);
   digitalWrite (rightF, LOW);
   digitalWrite (leftB, HIGH);
