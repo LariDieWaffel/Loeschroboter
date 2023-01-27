@@ -8,15 +8,18 @@ Löschroboter
 #include <Wire.h>
 
 //legt fest welcher Motor an welchem Pin angeschlossen ist
-int motor1 = 8; //das soll der links vorne sein
-int motor2 = 9; //das soll der rechts vorne sein
-int motor3 = 10; //das soll der links hinten sein
-int motor4 = 11; //das soll rechts hinten sein
+int leftF = 3; //links vorwärts
+int leftB = 5; //links rückwärts
+int rightB = 6; //rechts rückwärts
+int rightF = 7; //rechts vorwärts
+
+int anaST = 14; //der eine mit analogWrite
+int anaND = 15; //der andere mit analogWrite
 
 //legt fest welche Wassergeräte an welchem Pin angeschlossen sind
-int pump = 5;
-int trigger = 7;
-int echo = 6;
+int pump = 13;
+int trigger = 12;
+int echo = 11;
 
 //Variablen zur Berechnung des Wasserstandes
 long duration = 0;
@@ -28,10 +31,13 @@ int deviation = 2; // Höhe Sensor über maximalem Wasserspiegel
 void setup() 
 {
   //festlegen in welchem Modus die PINs sind
-  pinMode (motor1, OUTPUT);
-  pinMode (motor2, OUTPUT);
-  pinMode (motor3, OUTPUT);
-  pinMode (motor4, OUTPUT);
+  pinMode (leftF, OUTPUT);
+  pinMode (leftB, OUTPUT);
+  pinMode (rightF, OUTPUT);
+  pinMode (rightB, OUTPUT);
+  
+  pinMode (anaST, OUTPUT);
+  pinMode (anaND, OUTPUT);
 
   pinMode (trigger, OUTPUT);
   pinMode (echo, INPUT);
@@ -49,10 +55,12 @@ void forward ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum vorwärts Fahren
-  digitalWrite (motor1, HIGH);
-  digitalWrite (motor2, HIGH);
-  digitalWrite (motor3, HIGH);
-  digitalWrite (motor4, HIGH);
+  digitalWrite (anaST, HIGH);
+  digitalWrite (anaND, HIGH);
+  digitalWrite (leftF, HIGH);
+  digitalWrite (rightF, HIGH);
+  digitalWrite (leftB, LOW);
+  digitalWrite (rightB, LOW);
 }
 
 void stop ()
@@ -60,11 +68,27 @@ void stop ()
   //Pumpe ausstellen
   digitalWrite (pump, LOW);
 
-  //Motoransteuerung zum Stoppen
-  digitalWrite (motor1, LOW);
-  digitalWrite (motor2, LOW);
-  digitalWrite (motor3, LOW);
-  digitalWrite (motor4, LOW);
+  //Motoransteuerung zum rückwärts Fahren
+  digitalWrite (anaST, LOW);
+  digitalWrite (anaND, LOW);
+  digitalWrite (leftF, LOW);
+  digitalWrite (rightF, LOW);
+  digitalWrite (leftB, LOW);
+  digitalWrite (rightB, LOW);
+}
+
+void backwards ()
+{
+  //Pumpe ausstellen
+  digitalWrite (pump, LOW);
+
+  //Motoransteuerung zum rückwärts Fahren
+  digitalWrite (anaST, HIGH);
+  digitalWrite (anaND, HIGH);
+  digitalWrite (leftF, LOW);
+  digitalWrite (rightF, LOW);
+  digitalWrite (leftB, HIGH);
+  digitalWrite (rightB, HIGH);
 }
 
 void left ()
@@ -73,10 +97,12 @@ void left ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum nach links Fahren
-  digitalWrite (motor1, LOW);
-  digitalWrite (motor2, HIGH);
-  digitalWrite (motor3, LOW);
-  digitalWrite (motor4, HIGH);
+  digitalWrite (anaST, HIGH);
+  digitalWrite (anaND, HIGH);
+  digitalWrite (leftF, LOW);
+  digitalWrite (rightF, HIGH);
+  digitalWrite (leftB, LOW);
+  digitalWrite (rightB, HIGH);
 }
 
 void right ()
@@ -85,19 +111,18 @@ void right ()
   digitalWrite (pump, LOW);
 
   //Motoransteuerung zum nach rechts Fahren
-  digitalWrite (motor1, HIGH);
-  digitalWrite (motor2, LOW);
-  digitalWrite (motor3, HIGH);
-  digitalWrite (motor4, LOW);
+  digitalWrite (anaST, HIGH);
+  digitalWrite (anaND, HIGH);
+  digitalWrite (leftF, HIGH);
+  digitalWrite (rightF, LOW);
+  digitalWrite (leftB, HIGH);
+  digitalWrite (rightB, LOW);
 }
 
 void extinguish () 
 {
   //alle Motoren stoppen
-  digitalWrite (motor1, LOW);
-  digitalWrite (motor2, LOW);
-  digitalWrite (motor3, LOW);
-  digitalWrite (motor4, LOW);
+  stop ();
 
   //Pumpe anstellen
   digitalWrite (pump, HIGH);
@@ -132,6 +157,12 @@ void loop()
 
 
     else if (command == 's' || 'VK_DOWN')
+    {
+      backwards();
+      Serial.println ("Wir fahren rückwärts!");
+    }
+
+    else if (command== 'e')
     {
       stop();
       Serial.println ("Wir stoppen!");
